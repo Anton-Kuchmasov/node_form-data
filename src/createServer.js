@@ -7,8 +7,8 @@ const path = require('path');
 const BASE_PUBLIC_DIR = path.resolve('public');
 
 function sendBadRequest(res) {
-  res.statusCode = 500;
-  res.end('Server Error');
+  res.statusCode = 400;
+  res.end('Bad request');
 }
 
 function sendStaticFiles(rawUrl, res) {
@@ -71,7 +71,7 @@ function createServer() {
     }
 
     if (req.method === 'POST' && req.url === '/add-expense') {
-      res.setHeader('Content-type', 'application/json');
+      res.setHeader('Content-type', 'text/html');
 
       const chunks = [];
       let rawData = '';
