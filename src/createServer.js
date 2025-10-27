@@ -71,7 +71,7 @@ function createServer() {
     }
 
     if (req.method === 'POST' && req.url === '/add-expense') {
-      res.setHeader('Content-type', 'text/html');
+      res.setHeader('Content-type', 'application/json');
 
       const chunks = [];
       let rawData = '';
