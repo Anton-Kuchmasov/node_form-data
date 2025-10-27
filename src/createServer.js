@@ -88,7 +88,9 @@ function createServer() {
         // extra logic: in tests cases requests are in application/json,
         // but IRL, formdata usually comes as application/x-form-encoded
         // hope that MA guys will re-write this task (as well as previous one)
-        if (req.headers['content-type'].includes('application/json')) {
+        const contentTypeHeaders = req.headers['content-type'] || '';
+
+        if (contentTypeHeaders.includes('application/json')) {
           preparedData = JSON.parse(rawData);
         } else {
           preparedData = handleRawFormData(rawData, res);
@@ -100,14 +102,13 @@ function createServer() {
           return;
         }
 
-        const writeStream = fs.createWriteStream(
+        fs.writeFile(
           path.resolve('db/expense.json'),
+          JSON.stringify(preparedData),
+          () => {
+            res.end(JSON.stringify(preparedData));
+          },
         );
-
-        writeStream.write(JSON.stringify(preparedData), () => {
-          writeStream.end();
-          res.end(JSON.stringify(preparedData));
-        });
       });
     }
   });
